@@ -19,7 +19,7 @@ namespace CsvToMdb
       return sql?.Replace("'", "''");
     }
 
-    struct ColumnInfo
+    readonly struct ColumnInfo
     {
       public readonly ADOX.DataTypeEnum ColumnType;
       public readonly int ColumnSize;
@@ -64,16 +64,9 @@ namespace CsvToMdb
           while (column < csvReader.FieldCount)
           {
             var field = headers[column];
-            //foreach (string field in csvReader.GetFieldHeaders())
-            //{
-              //if ((int)csvReader.FieldHeaders[field] == column)
-              //{
-                // assume everything is an integer initially
-                if (!Ignore.Contains(field))
-                  columnTypes[field] = new ColumnInfo(ADOX.DataTypeEnum.adInteger, 0);
-                column++;
-              //}
-            //}
+            if (!Ignore.Contains(field))
+              columnTypes[field] = new ColumnInfo(ADOX.DataTypeEnum.adInteger, 0);
+            column++;
           }
         }
       }
@@ -112,8 +105,13 @@ namespace CsvToMdb
                           columnTypes[field] = new ColumnInfo(ADOX.DataTypeEnum.adBoolean, 1);
                       }
                       else
-                        columnTypes[field] = new ColumnInfo(ADOX.DataTypeEnum.adVarWChar,
-                          Math.Max(columnTypes[field].ColumnSize, csvReader[field].Length));
+                      {
+                        var maxLength = Math.Max(columnTypes[field].ColumnSize, csvReader[field].Length);
+                        if (maxLength > 255)
+                          columnTypes[field] = new ColumnInfo(ADOX.DataTypeEnum.adLongVarWChar, maxLength);
+                        else
+                          columnTypes[field] = new ColumnInfo(ADOX.DataTypeEnum.adVarWChar, maxLength);
+                      }
                     }
                   }
                 }
