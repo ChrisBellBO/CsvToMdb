@@ -156,10 +156,10 @@ namespace CsvToMdb
         {
           // show usage
           Console.WriteLine("CSV to MDB application");
-          Console.WriteLine("Usage - CsvToMdb.exe csvFile [delimiter] [primary key]");
+          Console.WriteLine("Usage - CsvToMdb.exe csvFile [delimiter] [primary key] [ignore columns]");
           Console.WriteLine("[delimiter] : The character that is used as the separator between columns");
           Console.WriteLine("[primary key] : The column that will be set as the primary key");
-          Console.WriteLine("[ignore columns] : Column that will not be added to the MDB (comma delimited)");
+          Console.WriteLine("[ignore columns] : Columns that will not be added to the MDB (comma delimited)");
           Console.WriteLine("Press any key");
           Console.ReadKey();
         }
