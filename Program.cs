@@ -45,7 +45,7 @@ namespace CsvToMdb
 
     private static CsvReader GetCsvReader(StreamReader reader)
     {
-      return new CsvReader(reader, true, Delimiter);
+      return new CsvReader(reader, true, Delimiter, 16777216);
     }
 
     private static Dictionary<string, ColumnInfo> ChooseColumnTypes(string csvFile)
